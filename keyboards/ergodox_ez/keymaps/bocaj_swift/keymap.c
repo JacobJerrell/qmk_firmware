@@ -68,5 +68,4 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
           ________________5_TRNS_KEYS________________,                                    ________________5_TRNS_KEYS________________,
                                           ____________________TRANS_THUMB_CLUSTER____________________
     )
-
 };

@@ -5,40 +5,48 @@ void matrix_scan_secrets(void) {}
 
 void tap(uint16_t keycode) { register_code(keycode); unregister_code(keycode); };
 
-bool layer_switch_is_active = false;
-bool layer_switch_timed_out = false;
 uint16_t layer_switch_timer = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     uint8_t layer = get_highest_layer(layer_state);
+    uint8_t modifiers = get_mods();
 
-    if (record->event.pressed) {
-        switch (keycode) {
-            case MC_LSWP:
+    // For semi-advanced macros that need a little more control
+    switch (keycode) {
+        case MC_LSWP:
+            if (modifiers & MODS_SHIFT_MASK) {
+                layer_move(0);
+                return false;
+            }
+            if (record->event.pressed) {
+                layer_switch_timer = timer_read();
                 switch (layer) {
                     case 0:
                         layer_move(_RAISE);
-                        layer_switch_is_active = true;
-                        layer_switch_timed_out = false;
-                        layer_switch_timer = timer_read();
                         break;
                     case _RAISE:
-                        if (layer_switch_timed_out) {
-                            layer_move(0);
-                            layer_switch_is_active = false;
-                            layer_switch_timed_out = false;
-                        } else {
-                            layer_move(_MOUSE);
-                        }
+                        layer_move(_MOUSE);
                         break;
                     case _MOUSE:
-                        layer_move(0);
-                        layer_switch_is_active = false;
-                        layer_switch_timed_out = false;
+                        layer_move(_LOWER);
                         break;
+                    case _LOWER:
+                        layer_move(0);
+                        return false;
                 }
-                return false;
+            } else {
+                if (timer_elapsed(layer_switch_timer) > TAPPING_TERM) {
+                    layer_move(layer - 1);
+                    return false;
+                }
+            }
+            return false;
+    }
+
+    // Basic Macros
+    if (record->event.pressed) {
+        switch (keycode) {
             case KC_EPRM:
                 eeconfig_init();
                 return false;
@@ -49,12 +57,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 set_single_persistent_default_layer(_WORKMAN);
                 layer_move(0);
                 ergodox_blink_all_leds();
-                return false;
-            // case MC_QWRT:
-            //     set_single_persistent_default_layer(_QWERTY);
-            //     layer_move(0);
-            //     ergodox_blink_all_leds();
-            //     return false;
                 return false;
             case MC_ARRW:
                 SEND_STRING("->");
@@ -81,13 +83,6 @@ void matrix_scan_user(void) {
     if (!has_ran_yet) {
         has_ran_yet = true;
         startup_user();
-    }
-
-    if (layer_switch_is_active) {
-        if (timer_elapsed(layer_switch_timer) > 1000) {
-            layer_switch_timed_out = true;
-            layer_switch_is_active = false;
-        }
     }
 
     if (layer == _WORKMAN) {
@@ -139,9 +134,7 @@ void matrix_scan_user(void) {
         }
 
         SEQ_TWO_KEYS(KC_B, KC_D) {
-            SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION " ");
-            tap(KC_ENTER);
-            SEND_STRING ("Built at: " QMK_BUILDDATE);
+            SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION " Built at: " QMK_BUILDDATE);
         }
         #ifndef NO_SECRETS
         matrix_scan_secrets();
