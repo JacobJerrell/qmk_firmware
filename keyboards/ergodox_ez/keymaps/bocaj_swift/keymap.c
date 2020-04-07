@@ -30,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______________WORKMAN_LHS_1_______________,                     _______________WORKMAN_RHS_1_______________,
                 _______________WORKMAN_LHS_2_______________,                     _______________WORKMAN_RHS_2_______________,
                 _______________WORKMAN_LHS_3_______________,                     _______________WORKMAN_RHS_3_______________,
-                        KC_LWR, KC_MSE, KC_UP, KC_LEFT,                                 KC_RIGHT, KC_DOWN, KC_NO, KC_NO
+                        KC_LWR, KC_NO, KC_UP, KC_LEFT,                                 KC_RIGHT, KC_DOWN, KC_NO, KC_NO
     ),
 
     [_RAISE] = LAYOUT_ergodox_bocaj_condensed_wrapper(

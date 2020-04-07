@@ -50,6 +50,7 @@ enum custom_keycodes {
 #define KC_RSE TT(_RAISE)
 #define KC_LWR TT(_LOWER)
 #define KC_MSE TT(_MOUSE)
+#define KC_HME TO(_WORKMAN)
 //#define KC_GAME TT(_DIABLO)
 
 // Other Keycodes

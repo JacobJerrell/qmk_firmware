@@ -9,40 +9,53 @@ uint16_t layer_switch_timer = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-    uint8_t layer = get_highest_layer(layer_state);
-    uint8_t modifiers = get_mods();
+    // uint8_t layer = get_highest_layer(layer_state);
+    // uint8_t modifiers = get_mods();
 
-    // For semi-advanced macros that need a little more control
-    switch (keycode) {
-        case MC_LSWP:
-            if (modifiers & MODS_SHIFT_MASK) {
-                layer_move(0);
-                return false;
-            }
-            if (record->event.pressed) {
-                layer_switch_timer = timer_read();
-                switch (layer) {
-                    case 0:
-                        layer_move(_RAISE);
-                        break;
-                    case _RAISE:
-                        layer_move(_MOUSE);
-                        break;
-                    case _MOUSE:
-                        layer_move(_LOWER);
-                        break;
-                    case _LOWER:
-                        layer_move(0);
-                        return false;
-                }
-            } else {
-                if (timer_elapsed(layer_switch_timer) > TAPPING_TERM) {
-                    layer_move(layer - 1);
-                    return false;
-                }
-            }
-            return false;
-    }
+    // For more advanced macros that need a little more control
+    // switch (keycode) {
+    //     case MC_LSWP:
+    //         // Holding Shift kicks you back
+    //         if (modifiers & MODS_SHIFT_MASK) {
+    //             switch (layer) {
+    //                 case _WORKMAN:
+    //                     layer_move(_MOUSE);
+    //                     break;
+    //                 default:
+    //                     layer_move(0);
+    //                     return false;
+    //             }
+    //         }
+    //         if ((layer != _WORKMAN) && (modifiers & MODS_SHIFT_MASK)) {
+    //             layer_move(0);
+    //             return false;
+    //         }
+    //         if (record->event.pressed) {
+    //             layer_switch_timer = timer_read();
+    //             switch (layer) {
+    //                 case 0:
+    //                     layer_move(_RAISE);
+    //                     break;
+    //                 case _RAISE:
+    //                     layer_move(_MOUSE);
+    //                     break;
+    //                 case _MOUSE:
+    //                     layer_move(_LOWER);
+    //                     break;
+    //                 case _LOWER:
+    //                     layer_move(0);
+    //                     return false;
+    //             }
+    //         } else {
+    //             if (timer_elapsed(layer_switch_timer) > TAPPING_TERM) {
+    //                 layer_move(layer - 1);
+    //                 return false;
+    //             }
+    //         }
+    //         return false;
+    //     default:
+    //         break;
+    // }
 
     // Basic Macros
     if (record->event.pressed) {

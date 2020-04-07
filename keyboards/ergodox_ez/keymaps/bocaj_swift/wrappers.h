@@ -22,7 +22,7 @@
       K20,       K21,  SFT_T(K22), GUI_T(K23), ALT_T(K24), K25,                           K26, ALT_T(K27), GUI_T(K28), SFT_T(K29),      K2A,  K2B, \
       K30, CTL_T(K31),       K32,        K33,        K34,  K35, ALL_T(K36),   MEH_T(K37), K38,       K39,        K3A,        K3B, CTL_T(K3C), K3D, \
       K40,       K41,        K42,        K43,        K44,                                            K45,        K46,        K47,       K48,  K49, \
-                                                  KC_APP,KC_HOME, /* <- LHS/RHS -> */ KC_END,KC_ESC,                                               \
+                                                   KC_APP,KC_HME, /* <- LHS/RHS -> */ KC_END,KC_ESC,                                               \
                                                            KC_NO, /* <- LHS/RHS -> */ KC_TRNS,                                                     \
                                       KC_SPACE,KC_BSPACE,KC_LEAD, /* <- LHS/RHS -> */ KC_LOCK,KC_TAB,KC_LWEN                                       \
 )
@@ -38,9 +38,9 @@
     LAYOUT_ergodox_bocaj_base_wrapper( \
             K00, K01, K02, K03, K04, K05, K06,               K07, K08, K09, K0A, K0B, K0C, K0D,     \
          KC_DEL, K10, K11, K12, K13, K14, KC_LPRN,       KC_RPRN, K15, K16, K17, K18, K19, KC_BSLS, \
-        MC_LSWP, K20, K21, K22, K23, K24,                         K25, K26, K27, K28, K29, KC_QUOT, \
+         KC_RSE, K20, K21, K22, K23, K24,                         K25, K26, K27, K28, K29, KC_QUOT, \
         KC_LSFT, K30, K31, K32, K33, K34, KC_LBRC,       KC_RBRC, K35, K36, K37, K38, K39, KC_MSE,  \
-          KC_NO, K40, K41, K42, K43,                                   K44, K45, K46, K47, KC_ADJS  \
+         KC_MSE, K40, K41, K42, K43,                                   K44, K45, K46, K47, KC_ADJS  \
 )
 
 /* Keymap Blocks */
