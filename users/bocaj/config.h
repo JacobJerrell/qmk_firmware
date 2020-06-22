@@ -1,33 +1,30 @@
 #pragma once
 
-#ifndef QMK_KEYS_PER_SCAN
-  #define QMK_KEYS_PER_SCAN 4
-#endif // QMK KEYS PER SCAN
+/* Personal Configuration */
+#define LEADER_TIMEOUT 250
+#define LEADER_PER_KEY_TIMING
 
-// this makes it possible to do rolling combos (zx) with keys that
-// convert to other keys on hold (z becomes ctrl when you hold it,
-// and when this option isn't enabled, z rapidly followed by x
-// actually sends Ctrl-x. That's bad.)
 #define IGNORE_MOD_TAP_INTERRUPT
-#undef PERMISSIVE_HOLD
 #define PREVENT_STUCK_MODIFIERS
+#define PERMISSIVE_HOLD
+#undef RETRO_TAPPING
 
-#ifdef TAPPING_TERM
-#undef TAPPING_TERM
-#endif // TAPPING_TERM
-#define TAPPING_TERM 175
-
-#define RETRO_TAPPING
-
-// Disable action_get_macro and fn_actions, since we don't use these
-// and it saves on space in the firmware.
+/* Save firmware space */
 #ifndef NO_DEBUG
-#define NO_DEBUG
+    #define NO_DEBUG
 #endif // !NO_DEBUG
+
 #if !defined(NO_PRINT) && !defined(CONSOLE_ENABLE)
-#define NO_PRINT
+    #define NO_PRINT
 #endif // !NO_PRINT
+
 #define NO_ACTION_MACRO
 #define NO_ACTION_FUNCTION
 
-#define MACRO_TIMER 5
+/* Disable unused and unneeded features to reduce on firmware size */
+#ifdef LOCKING_SUPPORT_ENABLE
+#    undef LOCKING_SUPPORT_ENABLE
+#endif
+#ifdef LOCKING_RESYNC_ENABLE
+#    undef LOCKING_RESYNC_ENABLE
+#endif
