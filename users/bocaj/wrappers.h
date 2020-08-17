@@ -19,9 +19,7 @@ expanded before being used as arguments to the LAYOUT_xxx macro.
 // #define LAYOUT_gergo_wrapper(...)            LAYOUT_gergo(__VA_ARGS__)
 #define WRAPPER_ortho_4x12(...)              LAYOUT_planck_mit(__VA_ARGS__)
 
-/*
-  Ergodox EZ Wrappers
-*/
+/*  ---------- LEFT HAND -----------   ---------- RIGHT HAND ---------- */
 #define WRAPPER_ergodox_bocaj(                                           \
     L00,L01,L02,L03,L04,L05,L06,           R00,R01,R02,R03,R04,R05,R06,  \
     L10,L11,L12,L13,L14,L15,L16,           R10,R11,R12,R13,R14,R15,R16,  \

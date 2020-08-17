@@ -15,9 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include QMK_KEYBOARD_H
 #include "bocaj.h"
-#include "quantum.h"
 
 /*
  * The `LAYOUT_ergodox_pretty_base` macro is a template to allow the use of
@@ -90,7 +88,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-bool process_record_keymap(uint16_t keycode, keyrecord_t *record) { return true; }
+bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
+  return false;
+}
+
+void matrix_init_keymap(void) {};
 
 // Runs whenever there is a layer state change.
 layer_state_t layer_state_set_keymap(layer_state_t state) {
@@ -122,5 +124,29 @@ layer_state_t layer_state_set_keymap(layer_state_t state) {
     ergodox_right_led_2_set(25);
     ergodox_right_led_3_set(25);
 
-    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+    return state;
+};
+
+void matrix_scan_keymap(void) {
+  uint8_t modifiers = get_mods();
+  uint8_t led_usb_state = host_keyboard_leds();
+  uint8_t one_shot = get_oneshot_mods();
+
+    if (modifiers) {
+        if (modifiers & MODS_SHIFT_MASK || led_usb_state & (1<<USB_LED_CAPS_LOCK) || one_shot & MODS_SHIFT_MASK) {
+            ergodox_right_led_1_on();
+            ergodox_right_led_1_set( 25 );
+        }
+        if ((modifiers & MODS_CTRL_MASK || one_shot & MODS_CTRL_MASK) && (modifiers & MODS_GUI_MASK || one_shot & MODS_GUI_MASK)) {
+            ergodox_right_led_2_on();
+            ergodox_right_led_2_set( 50 );
+        } else if ((modifiers & MODS_CTRL_MASK || one_shot & MODS_CTRL_MASK) || (modifiers & MODS_GUI_MASK || one_shot & MODS_GUI_MASK)) {
+            ergodox_right_led_2_on();
+            ergodox_right_led_2_set( 10 );
+        }
+        if (modifiers & MODS_ALT_MASK || one_shot & MODS_ALT_MASK) {
+            ergodox_right_led_3_on();
+            ergodox_right_led_3_set( 10 );
+        }
+    }
 };
