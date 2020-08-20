@@ -30,19 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Define layer names */
 enum userspace_layers {
     _WORKMAN = 0,
-    _NUMLOCK = 0,
     _QWERTY,
-    _COLEMAK,
-    _DVORAK,
-    _NORMAN,
-    _MALTRON,
-    _EUCALYN,
-    _CARPLAX,
-    _MODS, /* layer 8 */
-    _GAMEPAD,
-    _DIABLO,
-    _MACROS,
-    _MEDIA,
+    // _COLEMAK,
+    // _DVORAK,
+    // _MACROS,
     _LOWER,
     _MOUSE,
     _RAISE,

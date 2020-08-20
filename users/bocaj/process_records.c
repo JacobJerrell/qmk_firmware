@@ -17,15 +17,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
     ) {
         switch (keycode) {
-            case KC_QWERTY ... KC_COLEMAK:
+            case KC_WORKMAN ... KC_QWERTY:
                 if (record->event.pressed) {
                     uint8_t mods = mod_config(get_mods() | get_oneshot_mods());
                     if (!mods) {
-                        set_single_persistent_default_layer(keycode - KC_QWERTY);
+                        set_single_persistent_default_layer(keycode - KC_WORKMAN);
                     } else if (mods & MOD_MASK_SHIFT) {
-                        set_single_persistent_default_layer(keycode - KC_QWERTY + 4);
+                        set_single_persistent_default_layer(keycode - KC_WORKMAN + 4);
                     } else if (mods & MOD_MASK_CTRL) {
-                        set_single_persistent_default_layer(keycode - KC_QWERTY + 8);
+                        set_single_persistent_default_layer(keycode - KC_WORKMAN + 8);
                     }
                 }
                 break;

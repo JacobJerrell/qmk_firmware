@@ -56,10 +56,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_LOWER] = LAYOUT_ortho_4x12_bocaj(
-    KC_GRV,  _______, _______, KC_UP,   _______, KC_MINS, KC_EQUAL, KC_7, KC_8,   KC_9,    KC_BSLS, KC_EQUAL,
+    KC_GRV,  _______, _______, KC_UP,   _______, MC_ARRW, KC_MINS,  KC_7, KC_8,   KC_9,    KC_BSLS, KC_EQUAL,
     KC_DEL,  _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_LPRN, KC_RPRN,  KC_4, KC_5,   KC_6,    KC_ASTR, _______,
     _______, _______, _______, _______, _______, KC_LBRC, KC_RBRC,  KC_1, KC_2,   KC_3,    KC_PLUS, _______,
-    MO_MSE,  _______, _______, _______, _______,      _______,      KC_0, KC_DOT, KC_COMM, _______, _______
+    MO_MSE,  _______, _______, _______, _______,      _______,      KC_0, KC_DOT, KC_COMM, KC_MINS, _______
   ),
 
   [_MOUSE] = WRAPPER_ortho_4x12(
@@ -73,14 +73,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TILD, _________________RAISE_L1__________________, _________________RAISE_R1__________________, KC_EQUAL,
     KC_DEL,  _________________RAISE_L2__________________, _________________RAISE_R2__________________, KC_BSLS,
     _______, _________________RAISE_L3__________________, _________________RAISE_R3__________________, _______,
-    _______, _______, _______, _______, _______,     _______,      _______, _______, _______, _______, _______
+    _______, _______, _______, _______, KC_TAB,      _______,      _______, _______, _______, _______, _______
   ),
 
   [_ADJUST] = WRAPPER_ortho_4x12(
     KC_MAKE, _________________ADJUST_L1_________________, _________________ADJUST_R1_________________, KC_RST,
     VRSN,    _________________ADJUST_L2_________________, _________________ADJUST_R2_________________, EEP_RST,
     TH_LVL,  _________________ADJUST_L3_________________, _________________ADJUST_R3_________________, RGB_IDL,
-    HPT_TOG, _______, _______, _______, _______,     _______,   _______, _______, _______, _______, _______
+    HPT_TOG, _______, _______, _______, _______,     _______,      _______, _______, _______, _______, _______
   )
 
 };
@@ -168,31 +168,19 @@ void rgb_matrix_indicators_user(void) {
                 rgb_matrix_layer_helper(HSV_RED, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
                 break;
             default: {
-                bool mods_enabled = IS_LAYER_ON(_MODS);
+                bool mods_enabled = false;
                 switch (get_highest_layer(default_layer_state)) {
                     case _QWERTY:
                         rgb_matrix_layer_helper(HSV_CYAN, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
                         break;
-                    case _COLEMAK:
-                        rgb_matrix_layer_helper(HSV_MAGENTA, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
-                        break;
-                    case _DVORAK:
-                        rgb_matrix_layer_helper(HSV_SPRINGGREEN, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
-                        break;
+                    // case _COLEMAK:
+                    //     rgb_matrix_layer_helper(HSV_MAGENTA, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                    //     break;
+                    // case _DVORAK:
+                    //     rgb_matrix_layer_helper(HSV_SPRINGGREEN, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                    //     break;
                     case _WORKMAN:
                         rgb_matrix_layer_helper(HSV_CORAL, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
-                        break;
-                    case _NORMAN:
-                        rgb_matrix_layer_helper(HSV_GOLDENROD, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
-                        break;
-                    case _MALTRON:
-                        rgb_matrix_layer_helper(HSV_YELLOW, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
-                        break;
-                    case _EUCALYN:
-                        rgb_matrix_layer_helper(HSV_PINK, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
-                        break;
-                    case _CARPLAX:
-                        rgb_matrix_layer_helper(HSV_BLUE, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
                         break;
                 }
                 break;
@@ -204,12 +192,12 @@ void rgb_matrix_indicators_user(void) {
         case _QWERTY:
             rgb_matrix_set_color(is_ez ? 41 : 42, 0x00, 0xFF, 0xFF);
             break;
-        case _COLEMAK:
-            rgb_matrix_set_color(is_ez ? 41 : 42, 0xFF, 0x00, 0xFF);
-            break;
-        case _DVORAK:
-            rgb_matrix_set_color(is_ez ? 41 : 42, 0x00, 0xFF, 0x00);
-            break;
+        // case _COLEMAK:
+        //     rgb_matrix_set_color(is_ez ? 41 : 42, 0xFF, 0x00, 0xFF);
+        //     break;
+        // case _DVORAK:
+        //     rgb_matrix_set_color(is_ez ? 41 : 42, 0x00, 0xFF, 0x00);
+        //     break;
         case _WORKMAN:
             rgb_matrix_set_color(is_ez ? 41 : 42, 0xD9, 0xA5, 0x21);
             break;
