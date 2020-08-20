@@ -1,20 +1,3 @@
-/*
-Copyright 2020 Jacob Jerrell @JacobJerrell
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #pragma once
 #include "bocaj.h"
 
@@ -25,39 +8,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 enum userspace_custom_keycodes {
-    KC_EPRM = PLACEHOLDER_SAFE_RANGE,
-    KC_VRSN,
-    RGB_SLD,
-    MC_ARRW,
-    MC_WRKM,
-    MC_QWRT,
-    MC_LOCK,
-    MC_LSWP,
-    NEW_SAFE_RANGE
+    VRSN = PLACEHOLDER_SAFE_RANGE,  // Prints QMK Firmware and board info
+    KC_WORKMAN,                     // Sets default layer to WORKMAN
+    KC_QWERTY,                      // Sets default layer to QWERTY
+    // KC_COLEMAK,                     // Sets default layer to COLEMAK
+    // KC_DVORAK,                      // Sets default layer to DVORAK
+    KC_MAKE,                        // Run keyboard's customized make command
+    KC_RGB_T,                       // Toggles RGB Layer Indication mode
+    RGB_IDL,                        // RGB Idling animations
+    MC_ARRW,                        // ->
+    UC_FLIP,                        // (ಠ痊ಠ)┻━┻
+    UC_TABL,                        // ┬─┬ノ( º _ ºノ)
+    UC_SHRG,                        // ¯\_(ツ)_/¯
+    UC_DISA,                        // ಠ_ಠ
+    NEW_SAFE_RANGE                  // use "NEWPLACEHOLDER for keymap specific codes
 };
 
+bool process_record_secrets(uint16_t keycode, keyrecord_t *record);
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
-void matrix_scan_secrets(void);
 
-// Layout beautification
-#define TT_ADJ TT(_ADJUST)
-#define MO_MSE MO(_MOUSE)
-#define TT_MSE TT(_MOUSE)
-#define KC_HME TO(0)
+#define MO_MOD  MO(_MOD)
+#define TT_MOD  TT(_MOD)
 
-// Software bindings that switch to/launch XCode/VSCode/Chrome (Brave)/iTerm using BetterTouchTool
-#define KC_XCD HYPR(KC_1)
-#define KC_VSC HYPR(KC_2)
-#define KC_WEB HYPR(KC_3)
-#define KC_TRM HYPR(KC_4)
+#define QWERTY  KC_QWERTY
+// #define DVORAK  KC_DVORAK
+// #define COLEMAK KC_COLEMAK
+#define WORKMAN KC_WORKMAN
 
-// Custom Keycode Helpers
-#define MODS_SHIFT_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
-#define MODS_CTRL_MASK  (MOD_BIT(KC_LCTL)|MOD_BIT(KC_RCTRL))
-#define MODS_ALT_MASK  (MOD_BIT(KC_LALT)|MOD_BIT(KC_RALT))
-#define MODS_GUI_MASK  (MOD_BIT(KC_LGUI)|MOD_BIT(KC_RGUI))
+#define KC_ARRW MC_ARRW
 
-// Other Keycodes
-#define KC_RST RESET
+#define KC_RST   RESET
 
-void tap(uint16_t keycode);
+#define ALT_APP ALT_T(KC_APP)
+#define HYP_LBK ALL_T(KC_LBRACKET)
+#define MEH_RBK MEH_T(KC_RBRACKET)
+#define HYP_LPR ALL_T(KC_LPRN)
+#define MEH_RPR MEH_T(KC_RPRN)
+
+#define MG_NKRO MAGIC_TOGGLE_NKRO

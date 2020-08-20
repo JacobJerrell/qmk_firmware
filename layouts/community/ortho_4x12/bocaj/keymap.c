@@ -1,249 +1,318 @@
-/* Copyright 2015-2017 Jack Humbert
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-#include QMK_KEYBOARD_Ht
 #include "bocaj.h"
 
+#ifdef BACKLIGHT_ENABLE
+enum planck_keycodes {
+    BACKLIT = NEW_SAFE_RANGE,
+    TH_LVL,
+};
+
+#else
+#    define BACKLIT OSM(MOD_LSFT)
 enum planck_keycodes {
     TH_LVL = NEW_SAFE_RANGE,
 };
+#endif
 
+/*
+ * Tap/Hold Wrapper
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |Shift | Cmd  | Alt  |      |      | Alt  | Cmd  |Shift |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      | Ctrl |      |      |      |      |      |      |      |      | Ctrl |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |Lower |             |Raise |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
 #define LAYOUT_ortho_4x12_bocaj(...) WRAPPER_planck_bocaj(__VA_ARGS__)
+
+/*
+ * Base Alphanumeric Wrapper + Tap/Hold Wrapper
+ * ,-----------------------------------------------------------------------------------.
+ * |  Esc |      |      |      |      |      |      |      |      |      |      |  -   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  Tab |      |      |      |      | HYPR | MEH  |      |      |      |      |  '   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Shift|      |      |      |      |      |      |      |      |      |      | TTMOD|
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | MOMOD| Lead |  Up  | Left |BkSpc |    Space    |Enter |Right | Down | XXX  | XXX  |
+ * `-----------------------------------------------------------------------------------'
+ */
+#define LAYOUT_ortho_4x12_bocaj_base(...) WRAPPER_planck_bocaj_base(__VA_ARGS__)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    /*
-    *   Goal: Create a layout that easily adapts to my Ergodox layout to reduce mental burden when swapping keyboards
-    *          although I haven't had issues like that for quite some time now... Who knows with a new non-standard keyboard in the mix though?
-    */
-
-  /* Default Planck QWERTY Layout
-  * ,-----------------------------------------------------------------------------------.
-  * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
-  * |------+------+------+------+------+------+------+------+------+------+------+------|
-  * | Esc  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
-  * |------+------+------+------+------+------+------+------+------+------+------+------|
-  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
-  * |------+------+------+------+------+------+------+------+------+------+------+------|
-  * | Brite| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
-  * `-----------------------------------------------------------------------------------'
-  */
-//   [_DEFAULT] = LAYOUT_planck_grid(
-//     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-//     KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-//     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
-//     BACKLIT, KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
-//   )
-
-  [_WORKMAN] = LAYOUT_ortho_4x12_bocaj(
-    KC_ESC,  _______________WORKMAN_LHS_1_______________,  _______________WORKMAN_RHS_1_______________,   KC_BSLS,
-    KC_TAB,  _______________WORKMAN_LHS_2_______________,  _______________WORKMAN_RHS_2_______________,   KC_QUOT,
-    KC_LSFT, _______________WORKMAN_LHS_3_______________,  _______________WORKMAN_RHS_3_______________,   XXXXXXX,
-    KC_LEAD, KC_LBRC, KC_UP, KC_LEFT, KC_BSPACE, KC_SPACE, XXXXXXX, KC_ENTER, KC_RIGHT, KC_DOWN, KC_RBRC, MO_MSE
+  [_WORKMAN] = LAYOUT_ortho_4x12_bocaj_base(
+    _________________WORKMAN_L1________________, _________________WORKMAN_R1________________,
+    _________________WORKMAN_L2________________, _________________WORKMAN_R2________________,
+    _________________WORKMAN_L3________________, _________________WORKMAN_R3________________
   ),
 
-  [_QWERTY] = LAYOUT_ortho_4x12_bocaj(
-    KC_ESC,  ________________QWERTY_LHS1________________,  ________________QWERTY_RHS1________________,   KC_BSLS,
-    KC_TAB,  ________________QWERTY_LHS2________________,  ________________QWERTY_RHS2________________,   KC_QUOT,
-    KC_LSFT, ________________QWERTY_LHS3________________,  ________________QWERTY_RHS3________________,   XXXXXXX,
-    KC_LEAD, KC_LBRC, KC_UP, KC_LEFT, KC_BSPACE,KC_SPACE,  XXXXXXX, KC_ENTER, KC_RIGHT, KC_DOWN, KC_RBRC, MO_MSE
+  [_QWERTY] = LAYOUT_ortho_4x12_bocaj_base(
+    _________________QWERTY_L1_________________, _________________QWERTY_R1_________________,
+    _________________QWERTY_L2_________________, _________________QWERTY_R2_________________,
+    _________________QWERTY_L3_________________, _________________QWERTY_R3_________________
   ),
 
-  [_LOWER] = LAYOUT_ortho_4x12_bocaj(
-     KC_GRAVE, _______, _______, KC_UP,  XXXXXXX,   MC_ARRW,  KC_MINS, KC_7, KC_8,    KC_9,    KC_PSLS, KC_EQUAL,
-     KC_DEL, _______, KC_LEFT, KC_DOWN,  KC_RIGHT,  KC_LPRN,  KC_RPRN, KC_4, KC_5,    KC_6,    KC_PAST, KC_ENTER,
-     _______, _______, XXXXXXX, XXXXXXX, XXXXXXX,   KC_LBRC,  KC_RBRC, KC_1, KC_2,    KC_3,    KC_PPLS, _______,
-     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BSPACE, KC_SPACE, XXXXXXX, KC_0, KC_PDOT, KC_COMM, KC_MINS, XXXXXXX
+  [_LOWER] = WRAPPER_ortho_4x12(
+    KC_GRV,  _________________LOWER_L1__________________, _________________LOWER_R1__________________, KC_EQUAL,
+    KC_DEL,  _______, KC_LSFT, _______, KC_ARRW, KC_LPRN, _________________LOWER_R2__________________, KC_BSLS,
+    _______, _________________LOWER_L3__________________, _________________LOWER_R3__________________, _______,
+    _______, _______, _______, _______, _______,     _______,       KC_TAB, _______, _______, _______, _______
   ),
 
-  [_MOUSE] = LAYOUT_planck_grid(
-    _______, _______, _______, KC_WH_D, _______, _______,  _______, _______, _______, _______, _______, _______,
-    _______, _______, KC_WH_L, KC_WH_U, KC_WH_R, _______,  _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______
+  [_RAISE] = WRAPPER_ortho_4x12(
+    KC_TILD, _________________RAISE_L1__________________, _________________RAISE_R1__________________, KC_EQUAL,
+    KC_F11,  _________________RAISE_L2__________________, _________________RAISE_R2__________________, KC_F12,
+    _______, _________________RAISE_L3__________________, _________________RAISE_R3__________________, _______,
+    _______, _______, _______, _______, KC_DEL,      _______,      _______, _______, _______, _______, _______
   ),
 
-
-  [_RAISE] = LAYOUT_ortho_4x12_bocaj(
-    KC_GRAVE,  ________________NUMBERS_LHS________________,    ________________NUMBERS_RHS________________, KC_MINS,
-    KC_F1,     KC_F2,    KC_F3,    KC_F4,    KC_F5,  KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11, KC_F12,
-    _______,  _______,  _______,  _______, _______, _______,   _______, _______, _______, _______, _______, _______,
-    _______,  _______,  _______,  _______, _______, _______,   _______, _______, _______, _______, _______, _______
+  [_ADJUST] = WRAPPER_ortho_4x12(
+    KC_MAKE, _________________ADJUST_L1_________________, _________________ADJUST_R1_________________, KC_RST,
+    VRSN,    _________________ADJUST_L2_________________, _________________ADJUST_R2_________________, EEP_RST,
+    TH_LVL,  _________________ADJUST_L3_________________, _________________ADJUST_R3_________________, RGB_IDL,
+    HPT_TOG, _______, _______, _______, _______,     _______,      _______, _______, _______, _______, _______
   ),
 
-//   [_] = LAYOUT_planck_grid(
-
-//   ),
-
-/* Adjust (Lower + Raise)
- *                      v------------------------RGB CONTROL--------------------v
- * ,-----------------------------------------------------------------------------------.
- * |      | Reset|Debug | RGB  |RGBMOD| HUE+ | HUE- | SAT+ | SAT- |BRGTH+|BRGTH-|  Del |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | MUTE |Vol Dn|Vol Up| LOCK |AUTogg|MusSwp|Wrkman|Qwerty|      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |Voice-|Voice+|Mus on|Musoff|MIDIon|MIDIof|      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-  [_ADJUST] = LAYOUT_ortho_4x12_bocaj(
-    _______, RESET,    DEBUG,       RGB_TOG,   RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL,
-    _______, KC__MUTE, KC__VOLDOWN, KC__VOLUP, MC_LOCK, AU_TOG,  MU_MOD,  MC_WRKM, MC_QWRT, _______, _______, _______,
-    _______, MUV_DE,   MUV_IN,      MU_ON,     MU_OFF,  MI_ON,   MI_OFF,   TH_LVL, _______, _______, _______, _______,
-    _______, _______,  _______,     _______,   _______, _______, _______, _______, _______, _______, _______, _______
+  [_MOD] = WRAPPER_ortho_4x12(
+    _______, _______, _______, KC_WH_D, _______, _______,  _______, KC_7, KC_8,   KC_9,    KC_BSLS, KC_EQUAL,
+    _______, _______, KC_WH_L, KC_WH_U, KC_WH_R, _______,  _______, KC_4, KC_5,   KC_6,    KC_ASTR, _______,
+    _______, _______, _______, _______, _______, _______,  _______, KC_1, KC_2,   KC_3,    KC_PLUS, _______,
+    _______, _______, _______, _______,  KC_TAB,     KC_ENTER,      KC_0, KC_DOT, KC_COMM, KC_MINS, _______
   )
 
-// WIP
-//   [_MACRO] = LAYOUT_ortho_4x12_bocaj(
-//     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//     _______, KC_XCD,  KC_VSC,  KC_WEB,  KC_TRM,  _______, _______, _______, _______, _______, _______, _______,
-//     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-//   )
-
 };
-
-layer_state_t layer_state_set_keymap(layer_state_t state) {
-
-}
+// clang-format on
 
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-    case _LOWER:
-        if (record->event.pressed) {
-            layer_on(_LOWER);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-        } else {
-            layer_off(_LOWER);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-        }
-        break;
-        return false;
-    case _RAISE:
-        if (record->event.pressed) {
-            layer_on(_RAISE);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-        } else {
-            layer_off(_RAISE);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-        }
-        break;
-    case TH_LVL:
-        if (record->event.pressed) {
-            keyboard_config.led_level++;
-            if (keyboard_config.led_level > 4) {
-                keyboard_config.led_level = 0;
+#ifdef BACKLIGHT_ENABLE
+        case BACKLIT:
+            if (record->event.pressed) {
+                register_code(KC_RSFT);
+#    ifdef BACKLIGHT_ENABLE
+                backlight_step();
+#    endif
+            } else {
+                unregister_code(KC_RSFT);
             }
-            planck_ez_right_led_level((uint8_t)keyboard_config.led_level * 255 / 4);
-            planck_ez_left_led_level((uint8_t)keyboard_config.led_level * 255 / 4);
-            eeconfig_update_kb(keyboard_config.raw);
-            layer_state_set_kb(layer_state);
-        }
-        break;
+            break;
+#endif
+#ifdef KEYBOARD_planck_ez
+        case TH_LVL:
+            if (record->event.pressed) {
+                keyboard_config.led_level++;
+                if (keyboard_config.led_level > 4) {
+                    keyboard_config.led_level = 0;
+                }
+                planck_ez_right_led_level((uint8_t)keyboard_config.led_level * 255 / 4);
+                planck_ez_left_led_level((uint8_t)keyboard_config.led_level * 255 / 4);
+                eeconfig_update_kb(keyboard_config.raw);
+                layer_state_set_kb(layer_state);
+            }
+            break;
+#endif
     }
     return true;
 }
 
-// bool muse_mode = false;
-// uint8_t last_muse_note = 0;
-// uint16_t muse_counter = 0;
-// uint8_t muse_offset = 70;
-// uint16_t muse_tempo = 50;
+bool music_mask_user(uint16_t keycode) {
+    switch (keycode) {
+        default:
+            return true;
+    }
+}
 
-// void encoder_update(bool clockwise) {
-//   if (muse_mode) {
-//     if (IS_LAYER_ON(_RAISE)) {
-//       if (clockwise) {
-//         muse_offset++;
-//       } else {
-//         muse_offset--;
-//       }
-//     } else {
-//       if (clockwise) {
-//         muse_tempo+=1;
-//       } else {
-//         muse_tempo-=1;
-//       }
-//     }
-//   } else {
-//     if (clockwise) {
-//       #ifdef MOUSEKEY_ENABLE
-//         tap_code(KC_MS_WH_DOWN);
-//       #else
-//         tap_code(KC_PGDN);
-//       #endif
-//     } else {
-//       #ifdef MOUSEKEY_ENABLE
-//         tap_code(KC_MS_WH_UP);
-//       #else
-//         tap_code(KC_PGUP);
-//       #endif
-//     }
-//   }
-// }
+#ifdef RGB_MATRIX_ENABLE
 
-// void dip_switch_update_user(uint8_t index, bool active) {
-//     switch (index) {
-//         case 0: {
-// #ifdef AUDIO_ENABLE
-//             static bool play_sound = false;
-// #endif
-//             if (active) {
-// #ifdef AUDIO_ENABLE
-//                 if (play_sound) { PLAY_SONG(plover_song); }
-// #endif
-//                 layer_on(_ADJUST);
-//             } else {
-// #ifdef AUDIO_ENABLE
-//                 if (play_sound) { PLAY_SONG(plover_gb_song); }
-// #endif
-//                 layer_off(_ADJUST);
-//             }
-// #ifdef AUDIO_ENABLE
-//             play_sound = true;
-// #endif
-//             break;
-//         }
-//         case 1:
-//             if (active) {
-//                 muse_mode = true;
-//             } else {
-//                 muse_mode = false;
-//             }
-//     }
-// }
+// clang-format off
+void suspend_power_down_keymap(void) {
+    rgb_matrix_set_suspend_state(true);
+}
 
-// void matrix_scan_user(void) {
-// #ifdef AUDIO_ENABLE
-//     if (muse_mode) {
-//         if (muse_counter == 0) {
-//             uint8_t muse_note = muse_offset + SCALE[muse_clock_pulse()];
-//             if (muse_note != last_muse_note) {
-//                 stop_note(compute_freq_for_midi_note(last_muse_note));
-//                 play_note(compute_freq_for_midi_note(muse_note), 0xF);
-//                 last_muse_note = muse_note;
-//             }
-//         }
-//         muse_counter = (muse_counter + 1) % muse_tempo;
-//     } else {
-//         if (muse_counter) {
-//             stop_all_notes();
-//             muse_counter = 0;
-//         }
-//     }
-// #endif
-// }
+void suspend_wakeup_init_keymap(void) {
+    rgb_matrix_set_suspend_state(false);
+}
+// clang-format on
+
+void rgb_matrix_indicators_user(void) {
+    uint8_t this_mod = get_mods();
+    uint8_t this_led = host_keyboard_leds();
+    uint8_t this_osm = get_oneshot_mods();
+    bool    is_ez;
+#    ifdef KEYBOARD_planck_ez
+    is_ez = true;
+#    endif
+
+    if (g_suspend_state || !rgb_matrix_config.enable) return;
+
+#    if defined(RGBLIGHT_ENABLE)
+    if (!userspace_config.rgb_layer_change)
+#    else
+    if (userspace_config.rgb_layer_change)
+#    endif
+    {
+        switch (get_highest_layer(layer_state)) {
+            case _MOD:
+                rgb_matrix_layer_helper(HSV_ORANGE, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                break;
+            case _RAISE:
+                rgb_matrix_layer_helper(HSV_BLUE, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                break;
+            case _LOWER:
+                rgb_matrix_layer_helper(HSV_GREEN, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                break;
+            case _ADJUST:
+                rgb_matrix_layer_helper(HSV_RED, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                break;
+            default: {
+                bool mods_enabled = false;
+                switch (get_highest_layer(default_layer_state)) {
+                    case _QWERTY:
+                        rgb_matrix_layer_helper(HSV_CYAN, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                        break;
+                    // case _COLEMAK:
+                    //     rgb_matrix_layer_helper(HSV_MAGENTA, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                    //     break;
+                    // case _DVORAK:
+                    //     rgb_matrix_layer_helper(HSV_SPRINGGREEN, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                    //     break;
+                    case _WORKMAN:
+                        rgb_matrix_layer_helper(HSV_CORAL, mods_enabled, rgb_matrix_config.speed, LED_FLAG_MODIFIER);
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    switch (get_highest_layer(default_layer_state)) {
+        case _QWERTY:
+            rgb_matrix_set_color(is_ez ? 41 : 42, 0x00, 0xFF, 0xFF);
+            break;
+        // case _COLEMAK:
+        //     rgb_matrix_set_color(is_ez ? 41 : 42, 0xFF, 0x00, 0xFF);
+        //     break;
+        // case _DVORAK:
+        //     rgb_matrix_set_color(is_ez ? 41 : 42, 0x00, 0xFF, 0x00);
+        //     break;
+        case _WORKMAN:
+            rgb_matrix_set_color(is_ez ? 41 : 42, 0xD9, 0xA5, 0x21);
+            break;
+    }
+
+    if ((this_mod | this_osm) & MOD_MASK_SHIFT || this_led & (1 << USB_LED_CAPS_LOCK)) {
+        if (!layer_state_cmp(layer_state, _ADJUST)) {
+            rgb_matrix_set_color(24, 0x00, 0xFF, 0x00);
+        }
+        rgb_matrix_set_color(36, 0x00, 0xFF, 0x00);
+    }
+    if ((this_mod | this_osm) & MOD_MASK_CTRL) {
+        rgb_matrix_set_color(25, 0xFF, 0x00, 0x00);
+        rgb_matrix_set_color(34, 0xFF, 0x00, 0x00);
+        rgb_matrix_set_color(37, 0xFF, 0x00, 0x00);
+    }
+    if ((this_mod | this_osm) & MOD_MASK_GUI) {
+        rgb_matrix_set_color(39, 0xFF, 0xD9, 0x00);
+    }
+    if ((this_mod | this_osm) & MOD_MASK_ALT) {
+        rgb_matrix_set_color(38, 0x00, 0x00, 0xFF);
+    }
+}
+
+void matrix_init_keymap(void) {
+#    ifdef KEYBOARD_planck_light
+    writePinLow(D6);
+#    endif
+    // rgblight_mode(RGB_MATRIX_MULTISPLASH);
+}
+#else  // RGB_MATRIX_INIT
+
+void matrix_init_keymap(void) {
+#    if !defined(CONVERT_TO_PROTON_C) && !defined(KEYBOARD_planck)
+    setPinOutput(D5);
+    writePinHigh(D5);
+
+    setPinOutput(B0);
+    writePinHigh(B0);
+#    endif
+}
+#endif  // RGB_MATRIX_INIT
+
+#ifdef ENCODER_ENABLE
+void encoder_update(bool clockwise) {
+    switch (get_highest_layer(layer_state)) {
+        case _RAISE:
+            clockwise ? tap_code(KC_VOLD) : tap_code(KC_VOLU);
+            break;
+        case _LOWER:
+#    ifdef RGB_MATRIX_ENABLE
+            clockwise ? rgb_matrix_step() : rgb_matrix_step_reverse();
+#    else
+            clockwise ? tap_code(KC_PGDN) : tap_code(KC_PGUP);
+#    endif
+            break;
+        case _ADJUST:
+#    ifdef AUDIO_CLICKY
+            clockwise ? clicky_freq_up() : clicky_freq_down();
+#    endif
+            break;
+        default:
+            clockwise ? tap_code(KC_DOWN) : tap_code(KC_UP);
+    }
+#    ifdef AUDIO_CLICKY
+    clicky_play();
+#    endif
+}
+#endif  // ENCODER_ENABLE
+
+#ifdef KEYBOARD_planck_rev6
+void dip_update(uint8_t index, bool active) {
+    switch (index) {
+        case 0:
+            if (active) {
+                audio_on();
+            } else {
+                audio_off();
+            }
+            break;
+        case 1:
+            if (active) {
+                clicky_on();
+            } else {
+                clicky_off();
+            }
+            break;
+        case 2:
+            keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = active;
+            break;
+        case 3:
+            userspace_config.nuke_switch = active;
+            break;
+    }
+}
+#endif  // KEYBOARD_planck_rev6
+
+#ifdef KEYBOARD_planck_ez
+layer_state_t layer_state_set_keymap(layer_state_t state) {
+    planck_ez_left_led_off();
+    planck_ez_right_led_off();
+    switch (get_highest_layer(state)) {
+        case _LOWER:
+            planck_ez_left_led_on();
+            break;
+        case _RAISE:
+            planck_ez_right_led_on();
+            break;
+        case _ADJUST:
+            planck_ez_right_led_on();
+            planck_ez_left_led_on();
+            break;
+        default:
+            break;
+    }
+    return state;
+}
+#endif
