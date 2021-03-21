@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "bocaj.h"
+#include "v1/bocaj.h"
 
 #ifdef KEYBOARD_planck_ez
 userspace_config_t userspace_config;
@@ -133,7 +133,6 @@ void matrix_scan_user(void) {
 
     LEADER_DICTIONARY() {
         leading = false;
-        leader_end();
 
         // Website Refresh / XCode "Run"
         SEQ_ONE_KEY(KC_R) {
@@ -144,10 +143,12 @@ void matrix_scan_user(void) {
             SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION " Built at: " QMK_BUILDDATE);
         }
 
-        #ifndef NO_SECRETS
-        matrix_scan_secrets();
-        #endif // !NO_SECRETS
+        leader_end();
     }
+
+    #ifndef NO_SECRETS
+        matrix_scan_secrets();
+    #endif // !NO_SECRETS
     
 #if defined(RGB_MATRIX_ENABLE)
     matrix_scan_rgb_matrix();

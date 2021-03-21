@@ -21,11 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "version.h"
 #include "eeprom.h"
-#include "process_records.h"
-#include "wrappers.h"
-#if defined(RGB_MATRIX_ENABLE)
-#    include "rgb_matrix_stuff.h"
-#endif
+#include "v1/process_records.h"
+#include "v1/wrappers.h"
 
 /* Define layer names */
 enum userspace_layers {

@@ -1,5 +1,5 @@
 #pragma once
-#include "bocaj.h"
+#include "v1/bocaj.h"
 
 #if defined(KEYMAP_SAFE_RANGE)
 #    define PLACEHOLDER_SAFE_RANGE KEYMAP_SAFE_RANGE
